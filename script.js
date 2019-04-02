@@ -1,10 +1,10 @@
 
 const apiKey = 'qz3hlMZMU5EwSmj3RWyQhZx5Oc4B5Ojv94IzsCiW';
 
-function displayResults(responseJson){
+function displayResults(responseJson, maxResults){
     let data = responseJson.data;
     $('#results-list').empty();
-    for (let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length || i < maxResults; i++){
         $('#results-list').append(
             `<li>
               <h3>
@@ -29,7 +29,7 @@ function getParks(stateCode, maxResults){
       }
       throw new Error(response.statusText);
     })
-    .then(responseJson => displayResults(responseJson))
+    .then(responseJson => displayResults(responseJson, maxResults))
     .catch(err => {
       $('#js-error-message').text(`Something went wrong: ${err.message}`);
     });
