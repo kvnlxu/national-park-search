@@ -4,7 +4,7 @@ const apiKey = 'qz3hlMZMU5EwSmj3RWyQhZx5Oc4B5Ojv94IzsCiW';
 function displayResults(responseJson, maxResults){
     let data = responseJson.data;
     $('#results-list').empty();
-    for (let i = 0; i < data.length || i < maxResults; i++){
+    for (let i = 0; i < data.length; i++){
         $('#results-list').append(
             `<li>
               <h3>
@@ -20,7 +20,7 @@ function displayResults(responseJson, maxResults){
 }
 
 function getParks(stateCode, maxResults){
-    let url = `https://developer.nps.gov/api/v1/parks?stateCode=${stateCode}&limit=${maxResults}&api_key=${apiKey}`;
+    let url = `https://developer.nps.gov/api/v1/parks?${stateCode}&limit=${maxResults}&api_key=${apiKey}`;
 
     fetch(url)
     .then(response => {
@@ -35,11 +35,22 @@ function getParks(stateCode, maxResults){
     });
 }
 
+function parametizeStateCode(stateCode){
+  let resultArray = [];
+  const stateList = stateCode.split(" ");
+  for(let i = 0; i < stateList.length; i++){
+    if (stateList[i]) resultArray.push(`stateCode=${stateList[i]}`);
+  }
+  return resultArray.join('&');
+}
+
 function watchForm() {
     $('form').submit(event => {
       event.preventDefault();
-      const stateCode = $('#js-state-code').val();
-      const maxResults = $('#js-max-results').val();
+      let stateCode = $('#js-state-code').val();
+      let maxResults = $('#js-max-results').val();
+      stateCode = parametizeStateCode(stateCode);
+      maxResults--;
       getParks(stateCode, maxResults);
     });
   }
