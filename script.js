@@ -1,4 +1,3 @@
-
 const apiKey = 'qz3hlMZMU5EwSmj3RWyQhZx5Oc4B5Ojv94IzsCiW';
 
 function displayResults(responseJson, maxResults){
